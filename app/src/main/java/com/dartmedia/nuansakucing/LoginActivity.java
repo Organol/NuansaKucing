@@ -1,7 +1,10 @@
 package com.dartmedia.nuansakucing;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -10,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.dartmedia.nuansakucing.Forum.ForumMainActivity;
+import com.dartmedia.nuansakucing.Nearby.MapsActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initViews();
+        CheckPermission();
 
 
         final Button login = (Button) findViewById(R.id.login);
@@ -92,5 +97,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return valid;
+    }
+
+    private void CheckPermission() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
+        }
     }
 }

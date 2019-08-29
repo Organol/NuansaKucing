@@ -4,6 +4,12 @@
     <string name="info_forum">News</string>
     <string name="Lorem_Ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</string>
 
+    <string name="title_activity_fab">fab</string>
+
+    <string name="close_drawer">close</string>
+
+    <string name="open_drawer">open</string>
+
     <string-array name="forum_kategori">
         <item>Forum</item>
         <item>Jual/Beli</item>
@@ -11,7 +17,6 @@
         <item>Introduction</item>
         <item>Diskusi</item>
     </string-array>
-
     <string-array name="forum_titles">
         <item>Pengalaman Menjual Kucing di Dartmedia</item>
         <item>Jual Kucing Keturunan Champion, Sudah vaksin</item>
@@ -24,7 +29,6 @@
         <item>Kamu punya kucing ras Sultan? Jangan Senang dulu. Ini deretan kucing Termahal Didunia</item>
         <item>Remaja yang menyiksa Kucing di Kuningan Mengaku hanya iseng. R U F*CKIN KIDDING ME?</item>
     </string-array>
-
     <string-array name="forum_info">
         <item>Jadi gini gan, kemaren ane jual kucing yang gak sengaja nemu di selokan depan rumah, ane mandiin tuh sampe dia di beli sama ratu elizabeth II</item>
         <item>Nitip Lapak gan, Ane ada kucing nih kata orang ini ras Terbaik di belahan dunia laen, sekarang unitnya masih ane ttipin di daerah jaksel di sekitar Ragunan</item>
@@ -37,7 +41,6 @@
         <item>Kamu punya kucing ras Sultan? Jangan Senang dulu. Ini deretan kucing Termahal Didunia</item>
         <item>Remaja yang menyiksa Kucing di Kuningan Mengaku hanya iseng. R U F*CKIN KIDDING ME?</item>
     </string-array>
-
     <string-array name="forum_image">
         <item>https://www.tagar.id/Asset/uploads/677835-kucing.jpeg</item>
         <item>https://asset-a.grid.id//crop/0x0:0x0/700x465/photo/2019/01/14/3279367416.jpg</item>
@@ -50,9 +53,6 @@
         <item>https://www.tagar.id/Asset/uploads/677835-kucing.jpeg</item>
         <item>https://asset-a.grid.id//crop/0x0:0x0/700x465/photo/2019/01/14/3279367416.jpg</item>
     </string-array>
-    <string name="title_activity_fab">fab</string>
-    <string name="close_drawer">close</string>
-    <string name="open_drawer">open</string>
 
 
 </resources>

@@ -19,6 +19,7 @@ import android.view.View;
 import com.dartmedia.nuansakucing.Adapter.ForumAdapter;
 import com.dartmedia.nuansakucing.MainActivity;
 import com.dartmedia.nuansakucing.Model.Forum;
+import com.dartmedia.nuansakucing.Nearby.MapsActivity;
 import com.dartmedia.nuansakucing.R;
 
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class ForumMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.SearchIconDetail){
-            Intent newThreadIntent = new Intent(ForumMainActivity.this, NewThreadForumActivity.class);
+            Intent newThreadIntent = new Intent(ForumMainActivity.this, MapsActivity.class);
             startActivity(newThreadIntent);
         }
         return super.onOptionsItemSelected(item);
