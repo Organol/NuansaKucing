@@ -78,7 +78,8 @@ public class ListViewAdapter extends ArrayAdapter<Model> {
                 Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                 whatsappIntent.setType("text/plain");
                 whatsappIntent.setPackage("com.whatsapp");
-                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Application of social rating share with your friend");
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "*"+ model.getTitle()+"*"+ "\n" + "http://maps.google.com/maps?daddr=" + model.getGP().getLatitude() + "," + model.getGP().getLongitude() + "");
+//                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Application of social rating share with your friend");
                 try {
                     Objects.requireNonNull(context).startActivity(whatsappIntent);
                 } catch (android.content.ActivityNotFoundException ex) {

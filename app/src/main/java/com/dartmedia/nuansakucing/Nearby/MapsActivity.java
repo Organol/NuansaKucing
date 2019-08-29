@@ -16,7 +16,9 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -51,6 +53,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -81,6 +84,8 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
     ImageButton btnCenter;
 
 
+
+
     //JSONParse
 
 
@@ -102,6 +107,8 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
 
     //Formater
     DecimalFormat df = new DecimalFormat("0.00");
+
+    private Context context;
 
 
     @Override
@@ -142,9 +149,16 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
+
+        //Toolbar
+        Toolbar t = findViewById(R.id.ToolbarNearby);
+        setSupportActionBar(t);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         //API SERVICE
         mAPIService = UtilsAPI.getAPIService();
-        APIGETCheck();
+//        APIGETCheck();
 
         //Swipe Up
         swipeup_sheet = (LinearLayout) findViewById(R.id.bottom_sheet_main); //swipeup_sheet
@@ -159,8 +173,22 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
 
     }
 
+    //Toolbar section
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     //API Section
     private void APIGETCheck(){
+
         Log.i("debug", "onResponse: masukAPI");
        mAPIService.getPetshop().enqueue(new Callback<ResponseBody>() {
 
@@ -185,37 +213,47 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
                                 distanceMeasure(latit,longi);
                                 Log.i("debug", "onResponse: masuk beada " + longi + latit + own + notel + photo);
 //                                if (distance < 10000) {
-//                                    Log.i("debug", "onResponse: masuk distance");
                                     addMarker(GPJson, petshopName, own, notel);
                                     populateView(petshopName, own, GPJson,photo);
-//                                    populateView(petshopName, own, GPJson);
 //                                }
 
 
 
 
                             }
-                            Log.i("debug", "onResponse: masuk weaver");
-                            Toast.makeText(MapsActivity.this, "BERHASIL REGISTRASI", Toast.LENGTH_SHORT).show();
+                            progress.dismiss();
+                            Log.i("debug", "onResponse: Success");
                         }else{
+                            progress.dismiss();
                             Log.i("debug", "onResponse: error");
                             String error_message = jsonRESULTS.getString("error_msg");
                             Toast.makeText(MapsActivity.this, error_message, Toast.LENGTH_SHORT).show();
                         }
                    } catch (JSONException e) {
+                       progress.dismiss();
+                       Log.i("debug", "onResponse: Json " + e);
                        e.printStackTrace();
                    } catch (IOException e) {
+                       progress.dismiss();
+                       Log.i("debug", "onResponse: IO" + e);
                        e.printStackTrace();
                    }
                }else{
-                   Log.i("debug", "onResponse: GA BERHASIL");
+                   progress.dismiss();
+                   Log.i("debug", "onResponse: No Connection");
+                   Intent dir = new Intent(MapsActivity.this,LoginActivity.class);
+                   startActivity(dir);
+                   Toast.makeText(MapsActivity.this, "No Connection or Server Close", Toast.LENGTH_SHORT).show();
                }
            }
 
            @Override
            public void onFailure(Call<ResponseBody> call, Throwable t) {
+               progress.dismiss();
                Log.i("debug", "onFailure: ERROR > " + t.getMessage());
-               Toast.makeText(MapsActivity.this, "Koneksi Internet Bermasalah", Toast.LENGTH_SHORT).show();
+               Intent dir = new Intent(MapsActivity.this,LoginActivity.class);
+               startActivity(dir);
+               Toast.makeText(MapsActivity.this, "Fail to get Connection", Toast.LENGTH_SHORT).show();
            }
        });
     }
@@ -298,7 +336,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
     }
 
     //Bottomsheet dialog
-    private void showBottomSheetDialog(final GeoPoint longlat, String petshopName, String own, String notelp) {
+    private void showBottomSheetDialog(final GeoPoint longlat, final String petshopName, String own, String notelp) {
 
         if (mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             Toast.makeText(MapsActivity.this, "Expanded",Toast.LENGTH_LONG).show();
@@ -308,6 +346,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
 
         final View view = getLayoutInflater().inflate(R.layout.sheet_layout, null);
         Button btDir = (Button) view.findViewById(R.id.directionBtn);
+        Button btnShare = (Button) view.findViewById(R.id.shareBtn);
         TextView shopName = view.findViewById(R.id.PetshopNameL);
         TextView alamat = view.findViewById(R.id.alamatL);
         TextView notel = view.findViewById(R.id.noHp);
@@ -330,6 +369,21 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
                         Uri.parse("http://maps.google.com/maps?daddr=" + longlat.getLatitude() + "," + longlat.getLongitude() + ""));
 //
                 startActivity(intent);
+            }
+        });
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                whatsappIntent.setType("text/plain");
+                whatsappIntent.setPackage("com.whatsapp");
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "*"+ petshopName+"*"+ "\n" + "http://maps.google.com/maps?daddr=" + longlat.getLatitude() + "," + longlat.getLongitude() + "");
+//                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Application of social rating share with your friend");
+                try {
+                    Objects.requireNonNull(view.getContext()).startActivity(whatsappIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.whatsapp")));
+                }
             }
         });
 
@@ -425,7 +479,8 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
         lati = location.getLatitude();
         if (isItStart){
             NewLocation();
-            progress.dismiss();
+            APIGETCheck();
+//            progress.dismiss();
 
         }
     }
