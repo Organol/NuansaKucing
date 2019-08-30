@@ -45,6 +45,7 @@ public class ForumMainActivity extends AppCompatActivity {
 
         Toolbar t = findViewById(R.id.toolbarMain);
         setSupportActionBar(t);
+        t.setNavigationIcon(R.drawable.ic_menu_black_24dp);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
